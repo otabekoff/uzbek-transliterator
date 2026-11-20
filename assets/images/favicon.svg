@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <clipPath id="r"><rect width="64" height="64" rx="14"/></clipPath>
+  </defs>
+  <g clip-path="url(#r)">
+    <rect width="64" height="64" fill="#0099b5"/>
+    <rect y="42" width="64" height="2" fill="#ce1126"/>
+    <rect y="44" width="64" height="20" fill="#1eb53a"/>
+  </g>
+  <text x="32" y="37" text-anchor="middle" font-family="Segoe UI, Roboto, Arial, sans-serif" font-size="32" font-weight="700" fill="#fff">Oʻ</text>
+</svg>

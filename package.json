@@ -1,0 +1,31 @@
+{
+  "name": "uzbek-transliterator",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Uzbek Latin <-> Cyrillic converter that runs in the browser",
+  "keywords": [
+    "uzbek",
+    "transliteration",
+    "latin",
+    "cyrillic",
+    "o'zbek",
+    "lotin",
+    "kirill"
+  ],
+  "homepage": "https://otabekoff.github.io/uzbek-transliterator/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/otabekoff/uzbek-transliterator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/otabekoff/uzbek-transliterator/issues"
+  },
+  "author": "Otabek (https://github.com/otabekoff)",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test"
+  }
+}
