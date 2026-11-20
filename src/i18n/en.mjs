@@ -97,5 +97,6 @@ export default {
     'footer.privacy': 'Text is converted in your browser and never uploaded.',
     'footer.report': 'Found a mistake?',
     'footer.source': 'Source code',
-    close: 'Close'
+    close: 'Close',
+    'footer.provider': 'Provided by {org}'
 };

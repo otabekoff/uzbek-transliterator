@@ -142,6 +142,11 @@ html {
     color: var(--bs-fg-body);
 }
 
+.app-status-provider a {
+    color: var(--bs-fg-2);
+    font-weight: 600;
+}
+
 /* Workspace: two panes and the swap button --------------------------------------------- */
 
 .workspace {

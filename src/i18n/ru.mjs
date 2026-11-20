@@ -101,5 +101,6 @@ export default {
     'footer.privacy': 'Текст обрабатывается в браузере и никуда не отправляется.',
     'footer.report': 'Нашли ошибку?',
     'footer.source': 'Исходный код',
-    close: 'Закрыть'
+    close: 'Закрыть',
+    'footer.provider': 'Предоставлено {org}'
 };

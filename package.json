@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/otabekoff/uzbek-transliterator/issues"
   },
-  "author": "Otabek (https://github.com/otabekoff)",
+  "author": "Otabek Sadiridinov — MohirLab (https://mohirlab.uz)",
   "license": "MIT",
   "engines": {
     "node": ">=20"

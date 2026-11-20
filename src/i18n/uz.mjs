@@ -102,5 +102,6 @@ export default {
     'footer.privacy': 'Matn brauzeringizda oʻgiriladi va hech qayerga yuborilmaydi.',
     'footer.report': 'Xato topdingizmi?',
     'footer.source': 'Manba kodi',
-    close: 'Yopish'
+    close: 'Yopish',
+    'footer.provider': '{org} tomonidan taqdim etilgan'
 };
