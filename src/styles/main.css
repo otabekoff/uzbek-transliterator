@@ -1,0 +1,530 @@
+/*
+ * App workspace on top of Bootstrap 6. Unlayered, so these rules win over Bootstrap's @layer rules.
+ * Logical properties and grid throughout, so the Arabic-script page (dir="rtl") mirrors correctly.
+ */
+
+:root,
+:host {
+    /* Primary colour: the blue of the flag of Uzbekistan, darkened where it carries white text. */
+    --uz-blue: #0099b5;
+    --bs-primary-base: var(--uz-blue);
+    --bs-primary-bg: #007c93;
+    --bs-primary-fg: light-dark(#00718a, #5ccbe0);
+    --bs-primary-fg-emphasis: light-dark(#004857, #a6e3ee);
+    --bs-primary-bg-subtle: light-dark(#e6f5f8, #072b33);
+    --bs-primary-bg-muted: light-dark(#cdebf1, #0c3d48);
+    --bs-primary-border: light-dark(#94d3df, #135f6e);
+    --bs-primary-focus-ring: color-mix(in oklch, var(--uz-blue) 55%, transparent);
+    --bs-primary-contrast: #fff;
+
+    /* Surfaces of the workspace. */
+    --app-bg: light-dark(#f3f4f6, #0a0b0d);
+    --surface: light-dark(#ffffff, #141518);
+    --surface-alt: light-dark(#fafafb, #18191d);
+    --line: light-dark(#e4e6ea, #25272c);
+    --seg-track: light-dark(#eceef1, #1f2125);
+    --seg-active: light-dark(#ffffff, #2c2e34);
+    --shadow-surface: 0 1px 2px rgb(16 24 40 / .04), 0 12px 32px -16px rgb(16 24 40 / .14);
+    --radius-surface: 1rem;
+}
+
+/* App shell ------------------------------------------------------------------------------ */
+
+html {
+    background: var(--app-bg);
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+    background: var(--app-bg);
+}
+
+.bi {
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+.skip-link {
+    position: absolute;
+    inset-inline-start: 1rem;
+    inset-block-start: .5rem;
+    z-index: 1100;
+    padding: .5rem .75rem;
+    background: var(--surface);
+    border-radius: .5rem;
+}
+
+.app-header {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    min-height: 3.5rem;
+    padding-block: .5rem;
+    padding-inline: max(1rem, env(safe-area-inset-left)) max(.75rem, env(safe-area-inset-right));
+}
+
+.app-brand {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    color: var(--bs-fg-body);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.app-brand img {
+    border-radius: .375rem;
+}
+
+.app-title {
+    flex: 0 1 auto;
+    min-width: 0; /* let the title shrink and truncate instead of widening the page */
+    margin: 0;
+    padding-inline-start: .75rem;
+    border-inline-start: 1px solid var(--line);
+    font-size: var(--bs-font-size-sm);
+    font-weight: 500;
+    color: var(--bs-fg-3);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.app-actions {
+    display: flex;
+    align-items: center;
+    gap: .125rem;
+    margin-inline-start: auto;
+}
+
+.app-actions .btn-text {
+    color: var(--bs-fg-2);
+}
+
+.app-main {
+    flex: 1;
+    display: flex;
+    padding-inline: max(1rem, env(safe-area-inset-left)) max(1rem, env(safe-area-inset-right));
+}
+
+.app-status {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem 1.5rem;
+    padding: .75rem max(1.25rem, env(safe-area-inset-left)) calc(.75rem + env(safe-area-inset-bottom));
+    font-size: var(--bs-font-size-xs);
+    color: var(--bs-fg-3);
+}
+
+.app-status-note {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+}
+
+.app-status-links {
+    display: inline-flex;
+    gap: 1.25rem;
+}
+
+.app-status a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.app-status a:hover {
+    color: var(--bs-fg-body);
+}
+
+/* Workspace: two panes and the swap button --------------------------------------------- */
+
+.workspace {
+    flex: 1;
+    display: grid;
+    /* minmax(0, …) stops the wide segmented switchers from widening the page on phones. */
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) 0 minmax(0, 1fr);
+    min-width: 0;
+    min-height: 0;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-surface);
+    box-shadow: var(--shadow-surface);
+    overflow: hidden;
+}
+
+.pane {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+}
+
+.pane-target {
+    background: var(--surface-alt);
+    border-block-start: 1px solid var(--line);
+}
+
+.pane-head {
+    display: flex;
+    align-items: center;
+    min-height: 3.5rem;
+    padding: .625rem 1rem;
+    border-block-end: 1px solid var(--line);
+}
+
+.pane-text {
+    flex: 1;
+    width: 100%;
+    min-height: 32vh;
+    padding: 1.25rem;
+    border: 0;
+    resize: none;
+    color: var(--bs-fg-body);
+    background: transparent;
+    font: inherit;
+    font-size: clamp(1.0625rem, 1rem + .35vw, 1.3125rem);
+    line-height: 1.65;
+}
+
+.pane-text:focus {
+    outline: none;
+}
+
+.pane-text::placeholder {
+    color: var(--bs-fg-4);
+}
+
+.pane-foot {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    min-height: 3.25rem;
+    padding-block: .375rem .625rem;
+    padding-inline: 1.25rem .75rem;
+}
+
+.pane-count {
+    font-size: var(--bs-font-size-xs);
+    color: var(--bs-fg-3);
+    font-variant-numeric: tabular-nums;
+}
+
+.pane-tools {
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+    margin-inline-start: auto;
+}
+
+.pane-tools .btn-text {
+    color: var(--bs-fg-3);
+}
+
+.pane-tools .btn-text:hover {
+    color: var(--bs-fg-body);
+}
+
+.pane.dragging {
+    background: var(--bs-primary-bg-subtle);
+    box-shadow: inset 0 0 0 2px var(--uz-blue);
+}
+
+.experimental {
+    display: flex;
+    gap: .5rem;
+    align-items: flex-start;
+    margin: .875rem 1.25rem 0;
+    padding: .5rem .75rem;
+    font-size: var(--bs-font-size-sm);
+    color: var(--bs-fg-2);
+    background: var(--seg-track);
+    border-radius: .625rem;
+}
+
+.experimental .bi {
+    margin-block-start: .2em;
+}
+
+.experimental[hidden] {
+    display: none;
+}
+
+/* The swap button sits on the line between the panes: in a zero-size grid track. */
+.swap-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.swap {
+    pointer-events: auto;
+    width: 2.25rem;
+    height: 2.25rem;
+    color: var(--bs-fg-2);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgb(16 24 40 / .08);
+}
+
+.swap:hover:not(:disabled) {
+    color: var(--bs-primary-fg);
+    border-color: var(--bs-primary-border);
+}
+
+.swap .bi {
+    transform: rotate(90deg);
+    transition: transform .2s ease;
+}
+
+@media (min-width: 992px) {
+    .app-main {
+        padding-block-end: 0;
+    }
+
+    .workspace {
+        grid-template-rows: none;
+        grid-template-columns: minmax(0, 1fr) 0 minmax(0, 1fr);
+    }
+
+    .pane-target {
+        border-block-start: 0;
+        border-inline-start: 1px solid var(--line);
+    }
+
+    .pane-text {
+        min-height: 0;
+    }
+
+    /* Desktop: level with the script switchers. */
+    .swap-wrap {
+        align-items: flex-start;
+        padding-block-start: .625rem;
+    }
+
+    .swap .bi {
+        transform: none;
+    }
+
+    .swap:hover:not(:disabled) .bi {
+        transform: rotate(180deg);
+    }
+
+    .pane-target .pane-head {
+        padding-inline-start: 1.75rem;
+    }
+
+    #source-pane .pane-head {
+        padding-inline-end: 1.75rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .app-brand-name {
+        display: none;
+    }
+
+    .app-title {
+        padding-inline-start: 0;
+        border: 0;
+        color: var(--bs-fg-body);
+        font-size: var(--bs-font-size-md);
+        font-weight: 600;
+    }
+}
+
+/* Segmented script switcher ---------------------------------------------------------------- */
+
+.segmented {
+    display: inline-flex;
+    gap: .125rem;
+    min-width: 0; /* shrink inside the pane head and scroll sideways instead of overflowing */
+    max-width: 100%;
+    padding: .1875rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    background: var(--seg-track);
+    border-radius: .625rem;
+}
+
+.segmented::-webkit-scrollbar {
+    display: none;
+}
+
+.segmented .seg {
+    /* Bootstrap hides the radio with position: absolute; keep it inside the scrolling track,
+       or the off-screen inputs widen the whole page on phones. */
+    position: relative;
+    flex: 0 0 auto;
+    gap: .375rem;
+    min-height: 2rem;
+    padding: .3125rem .75rem;
+    font-size: var(--bs-font-size-sm);
+    font-weight: 500;
+    color: var(--bs-fg-2);
+    background: transparent;
+    border: 0;
+    border-radius: .5rem;
+    box-shadow: none;
+    white-space: nowrap;
+}
+
+.segmented .seg:hover {
+    color: var(--bs-fg-body);
+    background: transparent;
+}
+
+.segmented .seg:has(input:checked) {
+    color: var(--bs-fg-body);
+    background: var(--seg-active);
+    box-shadow: 0 1px 2px rgb(16 24 40 / .08), 0 0 0 1px rgb(16 24 40 / .04);
+}
+
+.seg-beta {
+    font-size: .625rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--bs-fg-3);
+}
+
+/* Arabic script ------------------------------------------------------------------------------ */
+
+.arabic,
+[lang="uz-Arab"] {
+    font-family: "Noto Naskh Arabic", "Segoe UI", Tahoma, "Geeza Pro", serif;
+}
+
+.pane-text.arabic {
+    font-size: clamp(1.25rem, 1.15rem + .4vw, 1.5rem);
+    line-height: 1.9;
+}
+
+/* Guide drawer ---------------------------------------------------------------------------------- */
+
+.guide-drawer {
+    --bs-drawer-width: min(38rem, calc(100vw - 2rem));
+    --bs-drawer-bg: var(--surface);
+    border-color: var(--line);
+    border-radius: var(--radius-surface);
+}
+
+/* Closed, Bootstrap parks the drawer just off-screen; phones would widen the page to include it.
+   Take it out of the layout until it opens (".hiding" keeps the closing animation). */
+.guide-drawer:not([open], .hiding) {
+    display: none;
+}
+
+.guide-drawer .drawer-header {
+    border-block-end: 1px solid var(--line);
+}
+
+.guide-drawer .drawer-title {
+    font-size: var(--bs-font-size-lg);
+    font-weight: 600;
+}
+
+.guide-drawer .drawer-body {
+    gap: 1.5rem;
+}
+
+.guide-lead {
+    margin: 0;
+    color: var(--bs-fg-2);
+}
+
+.guide-heading {
+    margin-block-end: .5rem;
+    font-size: var(--bs-font-size-xs);
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--bs-fg-3);
+}
+
+.script-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.script-item {
+    display: flex;
+    flex-direction: column;
+    gap: .375rem;
+    padding-block: 1rem;
+    border-block-end: 1px solid var(--line);
+}
+
+.script-item:first-child {
+    padding-block-start: .25rem;
+}
+
+.script-sample {
+    margin: 0;
+    font-size: 1.375rem;
+    font-weight: 600;
+    color: var(--bs-fg-body);
+}
+
+.alphabet-table {
+    margin-block-end: .75rem;
+    font-size: var(--bs-font-size-sm);
+}
+
+.alphabet-table th,
+.alphabet-table td {
+    white-space: nowrap;
+}
+
+.alphabet-table td.arabic {
+    font-size: 1.15rem;
+}
+
+.alphabet-table td.changed {
+    color: var(--bs-primary-fg-emphasis);
+    background-color: var(--bs-primary-bg-subtle);
+    font-weight: 600;
+}
+
+.prose-sm {
+    font-size: var(--bs-font-size-sm);
+}
+
+.prose-sm ul {
+    margin: 0;
+    padding-inline-start: 1.25rem;
+}
+
+.prose-sm li + li {
+    margin-block-start: .5rem;
+}
+
+.code-sample {
+    padding: .875rem 1rem;
+    overflow-x: auto;
+    font-size: .8125rem;
+    background: var(--seg-track);
+    border-radius: .625rem;
+}
+
+/* Toast ------------------------------------------------------------------------------------------ */
+
+.toast-dock {
+    position: fixed;
+    inset-block-end: calc(1.25rem + env(safe-area-inset-bottom));
+    inset-inline-end: 1.25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .swap .bi { transition: none; }
+}
