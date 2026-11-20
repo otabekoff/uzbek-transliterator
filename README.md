@@ -13,6 +13,8 @@ Oʻzbek matnini besh yozuv orasida oʻgiruvchi · Convert Uzbek text between fiv
 
 **[Ochish / Open the converter →](https://otabekoff.github.io/uzbek-transliterator/)**
 
+Provided by [MohirLab](https://mohirlab.uz)
+
 </div>
 
 ---
@@ -190,8 +192,9 @@ and what you expected, and add a test case to `test/translit.test.js` with any f
 
 ## Credits
 
-[Bootstrap](https://getbootstrap.com/) 6.0.0-alpha.1 and [Bootstrap Icons](https://icons.getbootstrap.com/) 1.13.2 (MIT).
+- Provided by [MohirLab](https://mohirlab.uz) · [MohirLab](https://mohirlab.uz) tomonidan taqdim etilgan.
+- [Bootstrap](https://getbootstrap.com/) 6.0.0-alpha.1 and [Bootstrap Icons](https://icons.getbootstrap.com/) 1.13.2 (MIT).
 
 ## License
 
-[MIT](LICENSE) © Otabek
+[MIT](LICENSE) © Otabek Sadiridinov — [MohirLab](https://mohirlab.uz)

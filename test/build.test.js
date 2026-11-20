@@ -30,6 +30,9 @@ test('build pre-renders every interface language', () => {
         assert.ok(html.includes(`<link rel="canonical" href="https://otabekoff.github.io/uzbek-transliterator/${slug}">`), slug + ' canonical');
         assert.ok(!html.includes('[['), slug + ': a [[protected]] marker leaked into the page');
         assert.match(html, /<script type="application\/ld\+json">/, slug + ' structured data');
+        assert.ok(html.includes('<a href="https://mohirlab.uz" lang="en" dir="ltr">MohirLab</a>'), slug + ' provider credit');
+        assert.ok(!html.includes('{org}'), slug + ': provider placeholder left in the page');
+        assert.ok(html.includes('"provider":{"@type":"Organization","name":"MohirLab","url":"https://mohirlab.uz"}'), slug + ' provider in structured data');
     }
 
     // Protected terms stay untouched inside the converted Uzbek interfaces.

@@ -4,6 +4,8 @@
 import { ALPHABET, ALPHABET_COLUMNS, SAMPLE_LATIN } from '../src/data.mjs';
 
 const REPO = 'https://github.com/otabekoff/uzbek-transliterator';
+const PROVIDER = { name: 'MohirLab', url: 'https://mohirlab.uz' };
+const AUTHOR = 'Otabek Sadiridinov';
 const LANG_TAGS = { latin: 'uz-Latn', latin2026: 'uz-Latn', cyrillic: 'uz-Cyrl', arabic: 'uz-Arab', yanalif: 'uz-Latn' };
 const EXPERIMENTAL = ['arabic', 'yanalif'];
 
@@ -97,8 +99,17 @@ export function renderPage({ locale, locales, t, site, convert, scripts, sourceS
         applicationCategory: 'UtilitiesApplication',
         operatingSystem: 'Any',
         isAccessibleForFree: true,
-        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+        provider: { '@type': 'Organization', name: PROVIDER.name, url: PROVIDER.url },
+        author: { '@type': 'Person', name: AUTHOR, url: 'https://github.com/otabekoff' },
+        copyrightHolder: { '@type': 'Person', name: AUTHOR },
+        copyrightYear: 2026,
+        license: 'https://opensource.org/licenses/MIT'
     };
+
+    // "Provided by MohirLab": the name stays in Latin letters and links to mohirlab.uz.
+    const providerLink = `<a href="${PROVIDER.url}" lang="en" dir="ltr">${PROVIDER.name}</a>`;
+    const provider = e(t('footer.provider')).replace('{org}', providerLink);
 
     const json = obj => JSON.stringify(obj).replace(/</g, '\\u003c');
 
@@ -235,9 +246,10 @@ ${icons}
 <footer class="app-status">
     <span class="app-status-note">${icon('shield-lock')}${e(t('footer.privacy'))}</span>
     <span class="app-status-links">
+        <span class="app-status-provider">${provider}</span>
         <a href="${REPO}/issues">${e(t('footer.report'))}</a>
         <a href="${REPO}">${e(t('footer.source'))}</a>
-        <span>MIT</span>
+        <span lang="en" dir="ltr">© 2026 ${AUTHOR} · <a href="${REPO}/blob/main/LICENSE">MIT</a></span>
     </span>
 </footer>
 
