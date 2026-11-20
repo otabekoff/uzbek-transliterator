@@ -1,8 +1,8 @@
 {
   "name": "uzbek-transliterator",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "private": true,
-  "description": "Uzbek Latin <-> Cyrillic converter that runs in the browser",
+  "description": "Uzbek converter between Latin, new Latin (2026), Cyrillic, Arabic (Yangi imlo) and Yanalif: an installable web app with pre-rendered pages in seven interface languages",
   "keywords": [
     "uzbek",
     "transliteration",
@@ -23,9 +23,12 @@
   "author": "Otabek (https://github.com/otabekoff)",
   "license": "MIT",
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "build": "node build/build.mjs",
+    "serve": "node build/serve.mjs",
+    "start": "node build/build.mjs && node build/serve.mjs"
   }
 }

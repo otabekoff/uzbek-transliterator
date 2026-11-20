@@ -2,7 +2,7 @@
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { latinToCyrillic, cyrillicToLatin } = require('../assets/scripts/translit.js');
+const { latinToCyrillic, cyrillicToLatin } = require('../src/scripts/translit.js');
 
 function table(fn, cases) {
     for (const [input, expected] of cases) {
@@ -152,4 +152,75 @@ test('cyrillic -> latin: upper case', () => {
 test('round trip latin -> cyrillic -> latin', () => {
     const text = 'O\'zbekiston Respublikasi poytaxti Toshkent shahri. Yo\'lda ketsa, ma\'no bor.';
     assert.equal(cyrillicToLatin(latinToCyrillic(text)), text);
+});
+
+const T = require('../src/scripts/translit.js');
+
+test('latin 1995 -> latin 2026 (law of 21 Oct 2026)', () => {
+    table(T.latinToLatin2026, [
+        ["O'zbekiston", 'Özbekiston'],
+        ['gʻoz', 'ğoz'],
+        ['shahar', 'şahar'],
+        ['SHAHAR', 'ŞAHAR'],
+        ['Choy', 'Çoy'],
+        ["ma'no", 'maʼno'],
+        ["Is'hoq", 'Ishoq'],
+        ["sho'rva", 'şörva'],
+        ['‘salom’', '‘salom’'],
+    ]);
+});
+
+test('latin 2026 -> latin 1995', () => {
+    table(T.latin2026ToLatin, [
+        ['Özbekiston', "O'zbekiston"],
+        ['ğoz', "g'oz"],
+        ['Şahar', 'Shahar'],
+        ['ŞAHAR', 'SHAHAR'],
+        ['çoy', 'choy'],
+        ['maʼno', "ma'no"],
+        ['Ishoq', "Is'hoq"],
+    ]);
+});
+
+test('convert: every source to every target', () => {
+    const cyr = 'Ўзбекистон шаҳри, Исҳоқ, маъно, чой, тонг';
+    const lat = "O'zbekiston shahri, Is'hoq, ma'no, choy, tong";
+    const lat26 = 'Özbekiston şahri, Ishoq, maʼno, çoy, tong';
+    for (const [from, text] of [['cyrillic', cyr], ['latin', lat], ['latin2026', lat26]]) {
+        assert.equal(T.convert(text, from, 'cyrillic'), cyr, from + ' -> cyrillic');
+        assert.equal(T.convert(text, from, 'latin'), lat, from + ' -> latin');
+        assert.equal(T.convert(text, from, 'latin2026'), lat26, from + ' -> latin2026');
+        assert.equal(T.convert(text, from, 'yanalif'), 'Ozʙekistan şahri, Ishaq, maʼna, caj, taꞑ', from + ' -> yanalif');
+        assert.equal(T.convert(text, from, 'arabic'), 'ئۉزبېکىستان شەھرى، ئىسھاق، مەءنا، چاي، تاڭ', from + ' -> arabic');
+    }
+});
+
+test('convert: decomposed ö (o + U+0308) is normalised', () => {
+    assert.equal(T.convert('O\u0308zbekiston', 'latin2026', 'cyrillic'), 'Ўзбекистон');
+});
+
+test('convert: arabic and yanalif are targets only', () => {
+    assert.throws(() => T.convert('x', 'arabic', 'latin'));
+    assert.throws(() => T.convert('x', 'yanalif', 'latin'));
+    assert.throws(() => T.convert('x', 'latin', 'klingon'));
+});
+
+test('yanalif: 1934 orthography', () => {
+    table(T.cyrillicToYanalif, [
+        ['Барча одамлар тенг', 'Barca adamlar teꞑ'],
+        ['туғиладилар', 'tuƣiladilar'],
+        ['ёз, юлдуз, яхши, ер', 'jaz, julduz, jaxşi, jer'],
+        ['жон, чой', 'çan, caj'],
+        ['БЎЛИБ', 'BOLIB'],
+    ]);
+});
+
+test('arabic: vowels at word start take ئ, punctuation is Arabic', () => {
+    table(T.cyrillicToArabic, [
+        ['олма', 'ئالمە'],
+        ['китоб', 'کىتاب'],
+        ['эркин', 'ئېرکىن'],
+        ['ер', 'يېر'],
+        ['ҳа, йўқ?', 'ھە، يۉق؟'],
+    ]);
 });
